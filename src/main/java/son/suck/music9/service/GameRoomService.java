@@ -1,12 +1,13 @@
 package son.suck.music9.service;
 
 import son.suck.music9.domain.GameRoom;
+import son.suck.music9.dto.GameRoomCreateDto;
 
 import java.util.List;
 
 public interface GameRoomService {
     // 1. 방 만들기 (방 제목, 방장 ID, 장르 리스트, 시작 연도, 끝 연도, 총 문제 수)
-    GameRoom createRoom(String title, Long hostId, List<String> genres, Integer startYear, Integer endYear, int maxSongCount);
+    GameRoom createRoom(GameRoomCreateDto dto);
 
     // 2. 대기실에 보여줄 "게임 중이 아닌" 방 목록 조회
     List<GameRoom> getWaitRooms();
