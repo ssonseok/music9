@@ -23,8 +23,11 @@ public class GameRoom {
     @Column(name = "genre_filter", length = 50)
     private String genreFilter;
 
-    @Column(name = "year_filter", length = 50)
-    private String yearFilter;
+    @Column(name = "start_year")
+    private Integer startYear; // 몇 년부터 (예: 1995)
+
+    @Column(name = "end_year")
+    private Integer endYear;
 
     @Column(name = "max_song_count", nullable = false)
     private Integer maxSongCount;
@@ -34,11 +37,12 @@ public class GameRoom {
 
 
     @Builder
-    public GameRoom(String title, User host, String genreFilter, String yearFilter, Integer maxSongCount) {
+    public GameRoom(String title, User host, String genreFilter, Integer startYear, Integer endYear, Integer maxSongCount) {
         this.title = title;
         this.host = host;
         this.genreFilter = genreFilter;
-        this.yearFilter = yearFilter;
+        this.startYear=startYear;
+        this.endYear=endYear;
         this.maxSongCount = maxSongCount;
         this.isPlaying = false;
     }
