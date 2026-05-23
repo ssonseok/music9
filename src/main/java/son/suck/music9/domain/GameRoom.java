@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -20,11 +23,15 @@ public class GameRoom {
     @JoinColumn(name = "host_id", nullable = false)
     private User host;
 
-    @Column(name = "genre_filter", length = 50)
-    private String genreFilter;
+    // 🔥 핵심 리팩토링 포인트: 단일 문자열에서 1:N 형태의 값 타입 컬렉션으로 변경!
+    // DB에는 자동으로 'game_room_genres'라는 매핑 테이블이 만들어지며 한 방에 여러 장르가 저장됩니다.
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "game_room_genres", joinColumns = @JoinColumn(name = "game_room_id"))
+    @Column(name = "genre_name", length = 50)
+    private List<String> selectedGenres = new ArrayList<>();
 
     @Column(name = "start_year")
-    private Integer startYear; // 몇 년부터 (예: 1995)
+    private Integer startYear;
 
     @Column(name = "end_year")
     private Integer endYear;
@@ -35,14 +42,14 @@ public class GameRoom {
     @Column(name = "is_playing", nullable = false)
     private Boolean isPlaying;
 
-
     @Builder
-    public GameRoom(String title, User host, String genreFilter, Integer startYear, Integer endYear, Integer maxSongCount) {
+    public GameRoom(String title, User host, List<String> selectedGenres, Integer startYear, Integer endYear, Integer maxSongCount) {
         this.title = title;
         this.host = host;
-        this.genreFilter = genreFilter;
-        this.startYear=startYear;
-        this.endYear=endYear;
+        // null 방지를 위한 안전장치 처리
+        this.selectedGenres = selectedGenres != null ? selectedGenres : new ArrayList<>();
+        this.startYear = startYear;
+        this.endYear = endYear;
         this.maxSongCount = maxSongCount;
         this.isPlaying = false;
     }
