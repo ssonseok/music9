@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class GameRoomCreateDto {
     private String title;
     private Long hostId;
-    private String genreFilter;
+    private List<String> selectedGenres;
     private Integer startYear;
     private Integer endYear;
     private Integer maxSongCount;
